@@ -34,3 +34,20 @@ print s.get()
 print s.size()
 print s.pop()
 print s.get()
+
+def importGraph(filename):
+     file = open(filename)
+     graph = {}
+     for line in file:
+          node = int(line.split()[0])
+          edge = line.split()[1]
+
+          # if node is not in graph yet creates key and list as value
+          if node not in graph:
+               graph[node] = list()
+          
+          graph[node].append(edge)
+     return graph
+
+g =  importGraph('scc.txt')
+print g[1], g[73945], g[739450]
