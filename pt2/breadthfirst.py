@@ -24,10 +24,11 @@
 #                   que.add(node)
 #                   marked[node] = True
 
-
+import random
 marked = dict()
 
-def breadthFirstSearch(graph, start_node):
+def breadthFirstSearch(graph, start_node=None):
+     if start_node == None: start_node = random.choice(graph.keys())
      que = myQueue(); que.enqueue(start_node)
 
      while que.size() > 0:
