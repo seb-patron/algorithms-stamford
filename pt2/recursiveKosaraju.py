@@ -11,31 +11,36 @@ def recursive_scc(graph, start_node):
      marked = dict()
      scc_stack = myStack()
      i = len(graph)-1
+     s = None
      while i > 1:
-          s = recursiveDFS(graph, marked, i,  scc_stack)
+          x = recursiveDFS(graph, marked, i,  scc_stack)
           i -= 1
-          print s
+          # print x
+          s = x
      print finish_time
-     print 'lol stack', lol_stack.get()
+     # print 'lol stack', lol_stack.get()
      lv = max(finish_time, key=finish_time.get)
      print lv, finish_time[lv]
 
      rev = reverseGraph(graph)
      marked2 = dict()
      # while len(finish_time) > 0:
-     while lol_stack.size() > 0:
-          print 'made it to qhile lolstack call'
+     # while lol_stack.size() > 0:
+     while s.size() > 0:
+          # print 'made it to qhile lolstack call'
           ls = list()
           # node = max(finish_time, key=finish_time.get)
           # del finish_time[node]
-          node = lol_stack.pop()
+          node = s.pop()
           recursiveDFS2(rev, marked2, node)
 
           for n in marked2:
                if n in finish_time:
                     ls.append(n)
                     del finish_time[n]
-          total_scc.append(ls)
+          
+          # only adds strongly connected components if they exist in this pass through
+          if len(ls) > 0: total_scc.append(ls)
 
 
 def recursiveDFS(graph, marked, node, stack=None):
@@ -47,12 +52,14 @@ def recursiveDFS(graph, marked, node, stack=None):
                # marked[node] = True
                recursiveDFS(graph, marked, neighbor, stack)
 
-     if node not in finish_time: lol_stack.push(node)
+     if node not in finish_time: 
+          # lol_stack.push(node)
+          stack.push(node)
      counter = counter + 1
      finish_time[node] = counter
-     stack.push(node)
+     # stack.push(node)
      
-     return stack.get()
+     return stack
 
 def recursiveDFS2(graph, marked, node, stack=None):
      if stack == None: stack = myStack()
