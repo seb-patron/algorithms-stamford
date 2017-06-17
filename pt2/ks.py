@@ -27,22 +27,32 @@ def kosaraju(graph):
           if node not in visited:
                DFS_stack = myStack()
                DFS(rev, visited, node, DFS_stack)
-               print ('stack from dfs that is a scc is', DFS_stack.get())
+               
                ls = list()
                while DFS_stack.size() > 0:
                     x = DFS_stack.pop()
                     ls.append(x)
+          # exceoptin makes sure only new scc's are added to scc list
           else:
                continue
           scc.append(ls)
-
+     visited = dict()
+     for node in graph:
+          for sublist in scc:
+               if node in sublist:
+                    # print ("Found it!", node)
+                    visited[node] = True
+                    continue
+          if node not in visited:
+               print ("ALERT: node not found", node)
+               scc.append([node])
      print ('\nscc is', scc)
 def DFS(graph, marked, node, stack):
      # if node not in marked: stack.push(node)
      marked[node] = True
      
      for neighbor in graph[node]:
-          if neighbor not in marked:
+          if neighbor not in marked and len(graph[neighbor]) > 0:
                # marked[node] = True
                DFS(graph, marked, neighbor, stack)
      if node not in stack.get():
@@ -98,14 +108,14 @@ class myStack:
 
 
 
-# g = {1: [4], 2: [8], 3: [6], 4: [7], 5: [2], 6:[9], 7: [1], 8: [5, 6], 9: [7, 3]}
-# print (g)
-# # recursive_scc(g, 1)
-# kosaraju(g)
+g = {1: [4], 2: [8], 3: [6], 4: [7], 5: [2], 6:[9], 7: [1], 8: [5, 6], 9: [7, 3]}
+print (g)
+# recursive_scc(g, 1)
+kosaraju(g)
 
-# print ('\nNow rnning test2')
-# g2 = importGraph('./testcases/test2.txt')
-# kosaraju(g2)
+print ('\nNow rnning test2')
+g2 = importGraph('./testcases/test2.txt')
+kosaraju(g2)
 
 print ('\n now rinning test 5')
 g3 = importGraph('./testcases/test5.txt')
