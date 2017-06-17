@@ -11,15 +11,12 @@ def kosaraju(graph):
           DFS(graph, visited, n, stack)
           n = n -1
      
-     print (stack.get())
+     # print (stack.get())
 
      rev = reverseGraph(graph)
 
      scc = list()
      visited = dict()
-
-     print ('this is graph:', graph)
-     print ('this is reversed', rev)
 
      while stack.size() > 0:
           node = stack.pop()
@@ -36,17 +33,23 @@ def kosaraju(graph):
           else:
                continue
           scc.append(ls)
+
+
      visited = dict()
+
+     # Makes sure every node in graph was explored for scc
      for node in graph:
           for sublist in scc:
                if node in sublist:
                     # print ("Found it!", node)
                     visited[node] = True
                     continue
+          # activates if node was not added as scc, adds it as a sinlge scc it is
           if node not in visited:
-               print ("ALERT: node not found", node)
+               # print ("ALERT: node not found", node)
                scc.append([node])
-     print ('\nscc is', scc)
+     
+     return scc
 def DFS(graph, marked, node, stack):
      # if node not in marked: stack.push(node)
      marked[node] = True
@@ -111,15 +114,18 @@ class myStack:
 g = {1: [4], 2: [8], 3: [6], 4: [7], 5: [2], 6:[9], 7: [1], 8: [5, 6], 9: [7, 3]}
 print (g)
 # recursive_scc(g, 1)
-kosaraju(g)
+ans = kosaraju(g)
+print (ans)
 
 print ('\nNow rnning test2')
 g2 = importGraph('./testcases/test2.txt')
-kosaraju(g2)
+ans = kosaraju(g2)
+print (ans)
 
 print ('\n now rinning test 5')
 g3 = importGraph('./testcases/test5.txt')
-kosaraju(g3)
+ans = kosaraju(g3)
+print (ans)
 
 
 # Answer: 3,3,3,0,0
