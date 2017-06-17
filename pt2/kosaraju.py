@@ -18,10 +18,11 @@ def kosaraju(graph):
      stack = myStack()
      n = len(graph)-1
      while n > 1:
-          DFS(graph, visited, n, stack)
+          n_str = str(n)
+          DFS(graph, visited, n_str, stack)
           n = n -1
      
-     # print (stack.get())
+     print ('stack order to transverse',stack.get())
 
      rev = reverseGraph(graph)
 
@@ -60,6 +61,10 @@ def kosaraju(graph):
                scc.append([node])
      
      return scc
+
+def DFS_loop():
+     return
+
 def DFS(graph, marked, node, stack):
      # if node not in marked: stack.push(node)
      marked[node] = True
@@ -90,14 +95,22 @@ def importGraph(filename):
      file = open(filename)
      graph = {}
      for line in file:
-          node = int(line.split()[0])
-          edge = int(line.split()[1])
+          node = str(line.split()[0])
+          edge = str(line.split()[1])
 
           # if node is not in graph yet creates key and list as value
           if node not in graph:
                graph[node] = list()
           
           graph[node].append(edge)
+
+     i = 1
+     while i < len(graph):
+          i += 1
+          s = str(i)
+          if s not in graph:
+               print (s, 'not in graph')
+               graph[s] = []
      return graph
 
 # The following is modified code from stackoverflow to implement a queue in python
@@ -122,42 +135,53 @@ class myStack:
 
 
 def run():
-     g = {1: [4], 2: [8], 3: [6], 4: [7], 5: [2], 6:[9], 7: [1], 8: [5, 6], 9: [7, 3]}
-     print (g)
-     # recursive_scc(g, 1)
-     ans = kosaraju(g)
-     print (ans)
-     scc_sizes = [len(scc) for scc in ans]
-     print (scc_sizes)
+     # g = {1: [4], 2: [8], 3: [6], 4: [7], 5: [2], 6:[9], 7: [1], 8: [5, 6], 9: [7, 3]}
+     # print (g)
+     # # recursive_scc(g, 1)
+     # ans = kosaraju(g)
+     # print (ans)
+     # scc_sizes = [len(scc) for scc in ans]
+     # print (scc_sizes)
 
      print ('\nNow rnning test2')
      g2 = importGraph('./testcases/test2.txt')
+     print (g2)
      ans = kosaraju(g2)
      print (ans)
 
+     print ('\nNow rnning test3')
+     g3 = importGraph('./testcases/test3.txt')
+     print (g3)
+     ans = kosaraju(g3)
+     print (ans)
+     # Answer: 3,3,1,1,0
+
+     print ('\nNow rnning test3')
+     g4 = importGraph('./testcases/test4.txt')
+     print (g4)
+     ans = kosaraju(g4)
+     print (ans)
+     # Answer: 7,1,0,0,0 
      print ('\n now rinning test 5')
      g3 = importGraph('./testcases/test5.txt')
      ans = kosaraju(g3)
      print (ans)
 
+     # Answer: 6,3,2,1,0
 
-run()
+
+# run()
 
 
 def assignment1():
      g = importGraph('scc.txt')
      print (len(g))
-     if 739452 in g:
-          print (g[739452])
-     else:
-          print ('739452 not found in graph')
-     print (g[855049])
-     # answer = kosaraju(g)
+     answer = kosaraju(g)
 
-     # scc_sizes = [len(scc) for scc in answer]
+     scc_sizes = [len(scc) for scc in answer]
 
      print ('\n\n the answers found are')
-     # print (scc_sizes)
+     print (scc_sizes)
 # Answer: 3,3,3,0,0
 
-# assignment1()
+assignment1()
