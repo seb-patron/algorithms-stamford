@@ -1,5 +1,15 @@
 # BELOW IS RECURSIVE kosaraju that works
-# THESE GLOBAL VARIABLES MUST BE UNCOMMENTED FOR BELOW TO WORK
+# # below imports and recursion limit increase are based on couresera forum recomendation
+from resource import setrlimit
+# from sys import setrecursionlimit
+import sys
+
+sys.setrecursionlimit(80000)
+
+print(sys.getrecursionlimit())
+# setrecursionlimit(80000)
+# setrlimit(resource.RLIMIT_STACK, (10**10, 10**10))
+# sys.setrecursionlimit(1500)
 import random
 
 def kosaraju(graph):
@@ -55,9 +65,10 @@ def DFS(graph, marked, node, stack):
      marked[node] = True
      
      for neighbor in graph[node]:
-          if neighbor not in marked and len(graph[neighbor]) > 0:
-               # marked[node] = True
-               DFS(graph, marked, neighbor, stack)
+          if neighbor in graph:
+               if neighbor not in marked and len(graph[neighbor]) > 0:
+                    # marked[node] = True
+                    DFS(graph, marked, neighbor, stack)
      if node not in stack.get():
           stack.push(node)
 
@@ -110,22 +121,43 @@ class myStack:
           return self.container    # returns container
 
 
+def run():
+     g = {1: [4], 2: [8], 3: [6], 4: [7], 5: [2], 6:[9], 7: [1], 8: [5, 6], 9: [7, 3]}
+     print (g)
+     # recursive_scc(g, 1)
+     ans = kosaraju(g)
+     print (ans)
+     scc_sizes = [len(scc) for scc in ans]
+     print (scc_sizes)
 
-g = {1: [4], 2: [8], 3: [6], 4: [7], 5: [2], 6:[9], 7: [1], 8: [5, 6], 9: [7, 3]}
-print (g)
-# recursive_scc(g, 1)
-ans = kosaraju(g)
-print (ans)
+     print ('\nNow rnning test2')
+     g2 = importGraph('./testcases/test2.txt')
+     ans = kosaraju(g2)
+     print (ans)
 
-print ('\nNow rnning test2')
-g2 = importGraph('./testcases/test2.txt')
-ans = kosaraju(g2)
-print (ans)
-
-print ('\n now rinning test 5')
-g3 = importGraph('./testcases/test5.txt')
-ans = kosaraju(g3)
-print (ans)
+     print ('\n now rinning test 5')
+     g3 = importGraph('./testcases/test5.txt')
+     ans = kosaraju(g3)
+     print (ans)
 
 
+run()
+
+
+def assignment1():
+     g = importGraph('scc.txt')
+     print (len(g))
+     if 739452 in g:
+          print (g[739452])
+     else:
+          print ('739452 not found in graph')
+     print (g[855049])
+     # answer = kosaraju(g)
+
+     # scc_sizes = [len(scc) for scc in answer]
+
+     print ('\n\n the answers found are')
+     # print (scc_sizes)
 # Answer: 3,3,3,0,0
+
+# assignment1()
