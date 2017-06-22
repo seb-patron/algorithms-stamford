@@ -3,10 +3,15 @@
 from resource import setrlimit
 # from sys import setrecursionlimit
 import sys
+import resource
+# sys.setrecursionlimit(80000)
+#set rescursion limit and stack size limit
+print (sys.path)
+sys.setrecursionlimit(10 ** 6)
+# resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
+# resource.setrlimit(resource.RLIMIT_STACK, (2 ** 20, 2 ** 25))
 
-sys.setrecursionlimit(80000)
-
-print(sys.getrecursionlimit())
+print('Recursion limit', sys.getrecursionlimit())
 # setrecursionlimit(80000)
 # setrlimit(resource.RLIMIT_STACK, (10**10, 10**10))
 # sys.setrecursionlimit(1500)
@@ -19,8 +24,9 @@ def kosaraju(graph):
      n = len(graph)-1
      while n > 1:
           n_str = str(n)
-          print ('DFS Loop: on node', n_str)
-          DFS(graph, visited, n_str, stack)
+          if n_str not in visited:
+               print ('DFS Loop: on node', n_str)
+               DFS(graph, visited, n_str, stack)
           n = n -1
      
      print ('stack order to transverse',stack.get())
@@ -158,7 +164,7 @@ def run():
      print (ans)
      # Answer: 3,3,1,1,0
 
-     print ('\nNow rnning test3')
+     print ('\nNow rnning test4')
      g4 = importGraph('./testcases/test4.txt')
      print (g4)
      ans = kosaraju(g4)
@@ -172,12 +178,14 @@ def run():
      # Answer: 6,3,2,1,0
 
 
-run()
+# run()
 
 
 def assignment1():
      g = importGraph('scc.txt')
      print (len(g))
+
+     print (g['340126'])
      answer = kosaraju(g)
 
      scc_sizes = [len(scc) for scc in answer]
@@ -186,4 +194,4 @@ def assignment1():
      print (scc_sizes)
 # Answer: 3,3,3,0,0
 
-# assignment1()
+assignment1()

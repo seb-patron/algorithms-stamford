@@ -14,28 +14,29 @@ import random
 
 def kosaraju(graph):
      # start_node = random.choice(graph.keys())
-     visited = dict()
-     stack = myStack()
+     # visited = dict()
+     # stack = myStack()
      n = len(graph)-1
-     while n > 1:
-          n_str = str(n)
-          DFS(graph, visited, n_str, stack)
-          n = n -1
+     stack = DFS_loop(graph)
      
      print ('stack order to transverse',stack.get())
 
      rev = reverseGraph(graph)
 
+     print ('rev graph', rev)
      scc = list()
      visited = dict()
 
      while stack.size() > 0:
           node = stack.pop()
-
+          print ('\nthis round, visited nodes ', visited)
+          print ('stack is', stack.get())
+          print ('node to chck is', node)
           if node not in visited:
                DFS_stack = myStack()
-               DFS(rev, visited, node, DFS_stack)
-               
+               # DFS(rev, visited, node, DFS_stack)
+               iterativeDFS2(rev, visited, DFS_stack, node)
+               print ('stack returned from DFS that is a scc', DFS_stack.get())
                ls = list()
                while DFS_stack.size() > 0:
                     x = DFS_stack.pop()
@@ -62,9 +63,60 @@ def kosaraju(graph):
      
      return scc
 
-def DFS_loop():
-     return
+def DFS_loop(graph):
+     visited = dict()
+     i = len(graph)
+     stack = myStack() 
+     while i > 0:
+          print ('dfs loop on', i)
+          node = str(i)
+          iterativeDFS(graph, visited, stack, node)
+          # if node not in stack.get():
+          #      stack.push(node)
+          if node not in stack.get():
+               stack.push(node)
+          i = i -1
+     return stack
 
+
+def iterativeDFS(graph, marked, Rstack, start_node=None):
+     if start_node == None: start_node = random.choice(graph.keys())
+
+     stack = myStack()
+     stack.push(start_node)
+     marked[start_node] = True
+
+     while stack.size() > 0:
+          current_node = stack.pop()
+          print ('current node', current_node)
+          for node in graph[current_node]:
+               if node not in marked:
+                    marked[node] = True
+                    stack.push(node)
+               else:
+                    if node not in Rstack.get():
+                         Rstack.push(node)
+
+def iterativeDFS2(graph, marked, Rstack, start_node=None):
+     if start_node == None: start_node = random.choice(graph.keys())
+
+     stack = myStack()
+     stack.push(start_node)
+     marked[start_node] = True
+     if start_node not in Rstack.get(): Rstack.push(start_node)
+     while stack.size() > 0:
+          current_node = stack.pop()
+          
+          for node in graph[current_node]:
+               
+               if node not in marked and node not in Rstack.get(): Rstack.push(node)
+               if node not in marked:
+                    print ('node not in marked', node)
+                    marked[node] = True
+                    stack.push(node)
+               # else:
+               #      if node not in Rstack.get():
+               #           Rstack.push(node)
 def DFS(graph, marked, node, stack):
      # if node not in marked: stack.push(node)
      marked[node] = True
@@ -156,7 +208,7 @@ def run():
      print (ans)
      # Answer: 3,3,1,1,0
 
-     print ('\nNow rnning test3')
+     print ('\nNow rnning test4')
      g4 = importGraph('./testcases/test4.txt')
      print (g4)
      ans = kosaraju(g4)
